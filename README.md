@@ -11,9 +11,9 @@ javac -cp "./jars/*:." *.java
 
 To run project, use this command:
 ---------------------------------
-java -cp "./jars/*:." Corset <skin>
+java -cp "./jars/*:." Corset :skin:
 
-where <skin> is name of skin, which you want to use.
+where :skin: is name of skin, which you want to use.
 
 For now there are available two skins:
 - RoseNature
