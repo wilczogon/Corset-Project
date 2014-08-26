@@ -98,6 +98,6 @@ public class Pattern{
   private List<PatternPiece> flatPieces;
   private List<Map.Entry<Double, Double>> points;
   private Texture texture;
-  private int rightLength = 0;
-  private int leftLength = 0;
+  private double rightLength = 0;
+  private double leftLength = 0;
 } 

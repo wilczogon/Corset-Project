@@ -8,7 +8,7 @@ import javax.media.opengl.glu.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.media.opengl.fixedfunc.*;
-
+import java.io.*;
 
 public class CorsetViewer implements GLEventListener, MouseMotionListener {
 
@@ -19,14 +19,16 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
     private double angleY = 0;
     private double angleX = Math.PI/2;
     private String textureName;
+    private String fragmentShaderName;
 
-    public CorsetViewer(Pattern[] corset, Corset corset2, String textureName) {
+    public CorsetViewer(Pattern[] corset, Corset corset2, String textureName, String fragmentShaderName) {
         GLProfile glp = GLProfile.getDefault();
         GLCapabilities caps = new GLCapabilities(glp);
         GLCanvas canvas = new GLCanvas(caps);
         this.corset = corset;
         this.corset2 = corset2;
         this.textureName = textureName;
+        this.fragmentShaderName = fragmentShaderName;
 
         Frame frame = new Frame("Corset Viewer");
         frame.setSize(600, 600);
@@ -69,6 +71,52 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
       gl.glDepthFunc(GL.GL_LEQUAL);
       gl.glDepthRange(0.0f, 1.0f);
       setCamera(gl, glu, 0, 100, distance);
+      
+      gl.glEnable(GL.GL_BLEND);
+      gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+      
+      float[] lightPos = {0, 1000, -100, 1};        // light position
+      float[] noAmbient = { 0.6f, 0.6f, 0.6f, 1f };     // low ambient light
+      float[] diffuse = { 0.5f, 0.5f, 0.5f, 0.5f };        // full diffuse colour
+
+      gl.glEnable(GLLightingFunc.GL_LIGHTING);
+      gl.glEnable(GLLightingFunc.GL_LIGHT0);
+      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_AMBIENT, noAmbient, 0);
+      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_DIFFUSE, diffuse, 0);
+      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_POSITION,lightPos, 0);
+      
+      if(fragmentShaderName != null){
+	int f = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
+
+	BufferedReader brf = null;
+      
+	try{
+	  brf = new BufferedReader(new FileReader("shaders/" + fragmentShaderName));
+      
+	  String line2;
+	  String content2 = "";
+	  while ((line2=brf.readLine()) != null) {
+	    content2 += line2 + "\n";
+	  }
+      
+	  String[] fsrc = new String[]{content2};
+	  gl.glShaderSource(f, 1, fsrc, null, 0);
+	  gl.glCompileShader(f);
+
+	  int shaderprogram = gl.glCreateProgram();
+	  gl.glAttachShader(shaderprogram, f);
+	  gl.glLinkProgram(shaderprogram);
+	  gl.glValidateProgram(shaderprogram);
+
+	  gl.glUseProgram(shaderprogram);
+	  
+	} catch(FileNotFoundException e){
+	  System.out.println(e.toString());
+	} catch(IOException e){
+	  System.out.println(e.toString());
+	}
+      }
+      
     }
 
     @Override

@@ -9,10 +9,11 @@ public class Corset{
     circles[numberOfCircle + 1] = circle;
   }
   
-  public Corset(int numberOfCircles, int numberOfSidePieces, String textureName){
+  public Corset(int numberOfCircles, int numberOfSidePieces, String textureName, String fragmentShaderName){
     this.numberOfSidePieces = numberOfSidePieces;
     this.numberOfCircles = numberOfCircles + 2;
     this.textureName = textureName;
+    this.fragmentShaderName = fragmentShaderName;
     circles = new CorsetCircle[numberOfCircles + 2];
     patterns = new Pattern[2*numberOfSidePieces + 5];
   }
@@ -50,7 +51,7 @@ public class Corset{
       }
     }
     
-    this.corsetViewer = new CorsetViewer(patterns, this, textureName);	//TODO
+    this.corsetViewer = new CorsetViewer(patterns, this, textureName, fragmentShaderName);	//TODO
   }
   
   private void findVertexes(){
@@ -96,12 +97,16 @@ public class Corset{
   
     int numberOfSidePieces = 6;
     
-    if(args.length != 1){
-      System.err.println("Please add as argument texture name.");
+    if(args.length != 1 && args.length != 2){
+      System.err.println("Please use following call:\n\tjava -cp \"./jars/*:.\" Corset <texture name> [<fragment shader name>]");
       System.exit(-1);
     } 
   
-    Corset corset = new Corset(5, numberOfSidePieces, args[0]);
+    String fragmentShaderName = null;
+    if(args.length == 2)
+      fragmentShaderName = args[1];
+    
+    Corset corset = new Corset(5, numberOfSidePieces, args[0], fragmentShaderName);
     
     corset.provideCircle(0, new CorsetCircle(0, 1.3, 95, 10, 12, 3, numberOfSidePieces));
     corset.provideCircle(1, new CorsetCircle(4, 1.3, 92, 12, 13, 3, numberOfSidePieces));
@@ -125,4 +130,5 @@ public class Corset{
   private Pattern[] patterns;
   private CorsetViewer corsetViewer;
   private String textureName;
+  private String fragmentShaderName;
 }
