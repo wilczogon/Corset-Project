@@ -7,10 +7,12 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import javax.media.opengl.fixedfunc.*;
 import java.io.*;
 
-public class CorsetViewer implements GLEventListener, MouseMotionListener {
+public class CorsetViewer implements GLEventListener, MouseMotionListener, KeyListener {
 
     private Pattern[] corset;
     private Corset corset2;
@@ -20,6 +22,7 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
     private double angleX = Math.PI/2;
     private String textureName;
     private String fragmentShaderName;
+    private int lightX = 0, lightY = 0, lightZ = 200;
 
     public CorsetViewer(Pattern[] corset, Corset corset2, String textureName, String fragmentShaderName) {
         GLProfile glp = GLProfile.getDefault();
@@ -42,6 +45,9 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
                 System.exit(0);
             }
         });
+        
+        canvas.addKeyListener(this);
+        frame.addKeyListener(this);
 
         canvas.addGLEventListener(this);
 
@@ -75,15 +81,25 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
       gl.glEnable(GL.GL_BLEND);
       gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
       
-      float[] lightPos = {0, 1000, -100, 1};        // light position
-      float[] noAmbient = { 0.6f, 0.6f, 0.6f, 1f };     // low ambient light
-      float[] diffuse = { 0.5f, 0.5f, 0.5f, 0.5f };        // full diffuse colour
+      float[] lightPos = {lightX, lightY, lightZ, 0};        // light position
+      int sum = lightX + lightY + lightZ;
+      
+      float[] lightDirection = {0, 0, 0};
+      if(sum != 0)
+	lightDirection = new float[]{-lightX/sum, -lightY/sum, -lightZ/sum};
+	
+      float[] noAmbient = { 1f, 1f, 1f, 1f };     // low ambient light
+      float[] diffuse = { 1f, 1f, 1f, 1 };        // full diffuse colour
 
       gl.glEnable(GLLightingFunc.GL_LIGHTING);
       gl.glEnable(GLLightingFunc.GL_LIGHT0);
-      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_AMBIENT, noAmbient, 0);
+      //gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_AMBIENT, noAmbient, 0);
       gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_DIFFUSE, diffuse, 0);
       gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_POSITION,lightPos, 0);
+      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_SPOT_DIRECTION,lightDirection, 0);
+      
+      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_SPOT_CUTOFF,new float[]{100}, 0);
+      gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_QUADRATIC_ATTENUATION,new float[]{1f}, 0);
       
       if(fragmentShaderName != null){
 	int f = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
@@ -134,6 +150,18 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
         gl.glClearDepth(1);
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	setCamera(gl, glu, angleX, angleY, distance);
+	
+	float[] lightPos = {lightX, lightY, lightZ, 0};        // light position
+	int sum = lightX + lightY + lightZ;
+	
+	float[] lightDirection = {0, 0, 0};
+	if(sum != 0)
+	  lightDirection = new float[]{-lightX/sum, -lightY/sum, -lightZ/sum};
+
+	gl.glEnable(GLLightingFunc.GL_LIGHTING);
+	gl.glEnable(GLLightingFunc.GL_LIGHT0);
+	gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_POSITION,lightPos, 0);
+	gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_SPOT_DIRECTION,lightDirection, 0);
         
         for(int i=0; i<corset.length; ++i)
 	  corset[i].draw(gl);
@@ -147,6 +175,32 @@ public class CorsetViewer implements GLEventListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent event){
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent evt) {
+      char c = evt.getKeyChar();
+      System.out.println("lightX: " + lightX + ", lightY: " + lightY + ", lightZ: " + lightZ);
+      if(c == '1')
+	lightX -= 2;
+      else if(c == '2')
+	lightX += 2;
+      else if(c == '3')
+	lightY -= 2;
+      else if(c == '4')
+	lightY += 2;
+      else if(c == '5')
+	lightZ -= 2;
+      else if(c == '6')
+	lightZ += 2;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent evt) {
+    }
+    
+    @Override
+    public void keyTyped(KeyEvent evt) {
     }
     
     private void setCamera(GL2 gl, GLU glu, double angle, double height, float distance) {
