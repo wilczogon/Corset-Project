@@ -54,7 +54,7 @@ public class CorsetCircle{
     
   }
   
-  private void countVertex(CorsetVertex fixedVertex, CorsetVertex movableVertex, double distance){
+  protected void countVertex(CorsetVertex fixedVertex, CorsetVertex movableVertex, double distance){
     movableVertex.setX(fixedVertex.getX());
     movableVertex.setY(fixedVertex.getY());
     
@@ -115,13 +115,13 @@ public class CorsetCircle{
     return result;
   }
   
-  private double height;
-  private double scale;
-  private double frontToSideProportion;
-  private double circuit;
-  private double frontPieceWidth;
-  private double backPieceWidth;
-  private double backSpaceWidth;
-  private int numberOfSidePieces;
-  private CorsetVertex[] vertexes;
+  protected double height;
+  protected double scale;
+  protected double frontToSideProportion;
+  protected double circuit;
+  protected double frontPieceWidth;
+  protected double backPieceWidth;
+  protected double backSpaceWidth;
+  protected int numberOfSidePieces;
+  protected CorsetVertex[] vertexes;
 }

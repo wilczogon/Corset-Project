@@ -106,19 +106,28 @@ public class Corset{
     if(args.length == 2)
       fragmentShaderName = args[1];
     
-    Corset corset = new Corset(5, numberOfSidePieces, args[0], fragmentShaderName);
+    Corset corset = new Corset(6, numberOfSidePieces, args[0], fragmentShaderName);
     
-    corset.provideCircle(0, new CorsetCircle(0, 1.3, 95, 10, 12, 3, numberOfSidePieces));
-    corset.provideCircle(1, new CorsetCircle(4, 1.3, 92, 12, 13, 3, numberOfSidePieces));
-    corset.provideCircle(2, new CorsetCircle(7, 1.4, 84, 13.5, 13.75, 3, numberOfSidePieces));
-    corset.provideCircle(3, new CorsetCircle(16, 1.3, 70, 18, 16, 3, numberOfSidePieces));
+    /*corset.provideCircle(0, new CorsetCircle(	0, 	1.3, 	95, 	10, 		12, 	3, numberOfSidePieces));
+    corset.provideCircle(1, new CorsetCircle(	4, 	1.3, 	92, 	12, 		13, 	3, numberOfSidePieces));
+    corset.provideCircle(2, new CorsetCircle(	7, 	1.4, 	84, 	13.5, 		13.75, 	3, numberOfSidePieces));
+    corset.provideCircle(3, new CorsetCircle(	16, 	1.3, 	70, 	18, 		16, 	3, numberOfSidePieces));
+    corset.provideCircle(4, new CorsetCircle(	24, 	1.2, 	73, 	22, 		20, 	3, numberOfSidePieces));
+    corset.provideCircle(5, new BustCircle(	31, 	1, 	88, 	25, 	44,	22, 	3, numberOfSidePieces));
+    */
+    
+    corset.provideCircle(0, new CorsetCircle(	0, 	1.3, 	95, 	10, 		12, 	3, numberOfSidePieces));
+    corset.provideCircle(1, new CorsetCircle(	4, 	1.3, 	92, 	10, 		12, 	3, numberOfSidePieces));
+    corset.provideCircle(2, new CorsetCircle(	7, 	1.4, 	84, 	10, 		12, 	3, numberOfSidePieces));
+    corset.provideCircle(3, new CorsetCircle(	16, 	1.3, 	70, 	11, 		13, 	3, numberOfSidePieces));
+    corset.provideCircle(4, new CorsetCircle(	24, 	1.2, 	73, 	13, 		15, 	3, numberOfSidePieces));
+    corset.provideCircle(5, new BustCircle(	31, 	1, 	88, 	15, 	44,	18, 	3, numberOfSidePieces));
+    
+    /*corset.provideCircle(0, new CorsetCircle(0, 1.3, 95, 22, 12, 3, numberOfSidePieces));
+    corset.provideCircle(1, new CorsetCircle(4, 1.3, 92, 22, 13, 3, numberOfSidePieces));
+    corset.provideCircle(2, new CorsetCircle(7, 1.4, 84, 20, 13.75, 3, numberOfSidePieces));
+    corset.provideCircle(3, new CorsetCircle(16, 1.3, 70, 16, 16, 3, numberOfSidePieces));
     corset.provideCircle(4, new CorsetCircle(24, 1.2, 73, 22, 20, 3, numberOfSidePieces));
-    
-    /*corset.provideCircle(0, new CorsetCircle(0, 1.3, 95, 10, 15, 5, 4));
-    corset.provideCircle(1, new CorsetCircle(4, 1.3, 92, 10, 15, 5, 4));
-    corset.provideCircle(2, new CorsetCircle(7, 1.4, 84, 10, 15, 5, 4));
-    corset.provideCircle(3, new CorsetCircle(16, 1.3, 70, 10, 15, 5, 4));
-    corset.provideCircle(4, new CorsetCircle(24, 1.2, 73, 10, 15, 5, 4));
     */
     corset.generatePatterns();
    
