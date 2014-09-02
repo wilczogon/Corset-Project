@@ -6,6 +6,7 @@ public class BustCircle extends CorsetCircle{
 	double circuit, 
 	double frontPieceWidth, 
 	double bustPartLength,
+	double backSinglePieceWidth,
 	double backPieceWidth, 
 	double backSpaceWidth,
 	int numberOfSidePieces){
@@ -17,7 +18,7 @@ public class BustCircle extends CorsetCircle{
     vertexes[0].setY(scale);
     countVertex(vertexes[0], vertexes[1], frontPieceWidth/2);
     
-    double backSinglePieceWidth = (circuit - frontPieceWidth - backPieceWidth)/(2*numberOfSidePieces);
+    //double backSinglePieceWidth = (circuit - frontPieceWidth - backPieceWidth)/(2*numberOfSidePieces);
     int backSinglePieceNo = (int)((backSinglePieceWidth*numberOfSidePieces - bustPartLength)/backPieceWidth);
     int frontSinglePieceNo = numberOfSidePieces - backSinglePieceNo;
     double frontSinglePieceWidth = bustPartLength/frontSinglePieceNo;
@@ -33,7 +34,7 @@ public class BustCircle extends CorsetCircle{
   }
   
   public BustCircle clone(){
-    return new BustCircle(height, frontToSideProportion, circuit, frontPieceWidth, bustPartLength, backPieceWidth, backSpaceWidth, numberOfSidePieces);
+    return new BustCircle(height, frontToSideProportion, circuit, frontPieceWidth, bustPartLength, backSinglePieceWidth, backPieceWidth, backSpaceWidth, numberOfSidePieces);
   }
   
   public String toString(){
@@ -45,4 +46,5 @@ public class BustCircle extends CorsetCircle{
   }
   
   private double bustPartLength;
+  private double backSinglePieceWidth;
 }
