@@ -41,7 +41,7 @@ public class CorsetCircle{
       return 2*frontToSideProportion*scale + vertexes[numberOfSidePieces+2].getY();
   }
   
-  private void countVertexes(){
+  protected void countVertexes(){
     vertexes[0].setY(scale);
     countVertex(vertexes[0], vertexes[1], frontPieceWidth/2);
     
