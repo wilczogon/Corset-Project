@@ -11,12 +11,14 @@ javac -cp "./jars/*:." *.java
 
 To run project, use this command:
 ---------------------------------
-java -cp "./jars/*:." Corset :skin:
+java -cp "./jars/*:." Corset :skin: [:shader name:]
 
-where :skin: is name of skin, which you want to use.
+where :skin: is name of skin, which you want to use, and :shader name: is name of shader file from "shaders" folder.
 
 For now there are available two skins:
 - RoseNature
 - TheGame
+- OldFabric
+- Rainbow
 
 I hope that you will like it.
